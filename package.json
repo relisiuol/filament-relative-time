@@ -1,0 +1,20 @@
+{
+  "name": "filament-relative-time",
+  "private": true,
+  "author": {
+    "name": "Louis Vedel",
+    "email": "contact@relisiuol.fr"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "watch": "node scripts/build.mjs --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@github/relative-time-element": "^4.4.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0"
+  }
+}

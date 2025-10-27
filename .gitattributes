@@ -1,0 +1,15 @@
+/.github              export-ignore
+/scripts              export-ignore
+/tests                export-ignore
+/node_modules         export-ignore
+/resources/js         export-ignore
+/package.json         export-ignore
+/package-lock.json    export-ignore
+/pnpm-lock.yaml       export-ignore
+/yarn.lock            export-ignore
+/.idea                export-ignore
+/.vscode              export-ignore
+/.editorconfig        export-ignore
+/.gitignore           export-ignore
+/.gitattributes       export-ignore
+/CHANGELOG.md         export-ignore

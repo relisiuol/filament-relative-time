@@ -1,0 +1,49 @@
+{
+  "name": "relisiuol/filament-relative-time",
+  "description": "Filament 4 column powered by @github/relative-time-element.",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "filament",
+    "filamentphp",
+    "laravel",
+    "tables",
+    "column",
+    "relative-time",
+    "web-component",
+    "timezone",
+    "datetime"
+  ],
+  "homepage": "https://github.com/relisiuol/filament-relative-time",
+  "support": {
+    "issues": "https://github.com/relisiuol/filament-relative-time/issues",
+    "source": "https://github.com/relisiuol/filament-relative-time"
+  },
+  "authors": [
+    {
+      "name": "Louis Vedel",
+      "email": "contact@relisiuol.fr",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "illuminate/support": "^12.0",
+    "filament/filament": "^4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Relisiuol\\FilamentRelativeTime\\": "src/"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Relisiuol\\FilamentRelativeTime\\RelativeTimeServiceProvider"
+      ]
+    }
+  }
+}
