@@ -32,13 +32,5 @@ class RelativeTimePlugin implements Plugin
         }
     }
 
-    public function boot(Panel $panel): void
-    {
-        $panel->renderHook(
-            PanelsRenderHook::BODY_START,
-            fn () => view('filament-relative-time::partials.config', [
-                'timeZone' => config('filament-relative-time.defaults.time-zone'),
-            ])
-        );
-    }
+    public function boot(Panel $panel): void {}
 }

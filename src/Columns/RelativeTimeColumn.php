@@ -8,11 +8,10 @@ use Closure;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\HtmlString;
 
 class RelativeTimeColumn extends TextColumn
 {
-    protected string $view = 'filament-relative-time::filament.tables.columns.relative-time';
-
     /** @var string|Closure|null 'relative' | 'datetime' | 'duration' */
     protected string|Closure|null $format = null;
 
@@ -45,6 +44,15 @@ class RelativeTimeColumn extends TextColumn
 
     /** @var bool|Closure|null Toggle no-title attribute */
     protected bool|Closure|null $noTitle = null;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->placeholder('—');
+        // $this->html();
+        $this->formatStateUsing(fn (mixed $state): HTMLString => $this->formatRelativeTime($state));
+    }
 
     // ---- Fluent API
 
@@ -118,9 +126,97 @@ class RelativeTimeColumn extends TextColumn
 
     // ---- Helpers/Resolvers
 
-    public function getIsoUtcState(): ?string
+    protected function formatRelativeTime(mixed $state): HtmlString|null
     {
-        $state = $this->getState();
+        $isoUtc = $this->getIsoUtcState($state);
+
+        if ($isoUtc === null) {
+            return null;
+        }
+
+        $fallback = $this->getServerFallback($state);
+        $format = $this->getResolvedFormat();
+        $precision = $this->getResolvedPrecision();
+        $threshold = $this->getResolvedThreshold();
+        $timeZone = $this->getResolvedTimeZone();
+        $locale = $this->getResolvedLocale();
+        $intl = $this->getResolvedDatetimeIntl();
+        $elementAttributes = $this->getResolvedElementAttributes() ?? [];
+        $formatStyle = $this->getResolvedFormatStyle();
+        $tense = $this->getResolvedTense();
+        $absolutePrefix = $this->getResolvedAbsolutePrefix();
+        $noTitle = $this->getResolvedNoTitle();
+
+        $baseAttributes = [
+            'datetime' => $isoUtc,
+            'title' => $fallback,
+        ];
+
+        if ($format) {
+            $baseAttributes['format'] = $format;
+        }
+
+        if ($precision) {
+            $baseAttributes['precision'] = $precision;
+        }
+
+        if ($threshold) {
+            $baseAttributes['threshold'] = $threshold;
+        }
+
+        if ($locale) {
+            $baseAttributes['lang'] = $locale;
+        }
+
+        if ($timeZone && $timeZone !== 'auto') {
+            $baseAttributes['time-zone'] = $timeZone;
+        }
+
+        if ($formatStyle) {
+            $baseAttributes['format-style'] = $formatStyle;
+        }
+
+        if ($tense) {
+            $baseAttributes['tense'] = $tense;
+        }
+
+        if (($absolutePrefix !== null) && in_array($format, ['relative', 'auto', null], true)) {
+            $baseAttributes['prefix'] = $absolutePrefix;
+        }
+
+        if ($noTitle) {
+            $baseAttributes['no-title'] = true;
+        }
+
+        if ($intl && ($format === 'datetime')) {
+            foreach ($intl as $key => $value) {
+                $baseAttributes[$key] = $value;
+            }
+        }
+
+        $allAttributes = array_merge($baseAttributes, $elementAttributes);
+        $attributesString = collect($allAttributes)
+            ->map(function ($value, $key) {
+                if ($value === null) {
+                    return null;
+                }
+
+                if ($value === true) {
+                    return $key;
+                }
+
+                return $key . '="' . e((string) $value) . '"';
+            })
+            ->filter()
+            ->implode(' ');
+
+        return new HtmlString('<relative-time ' . $attributesString . '>' . e($fallback) . '</relative-time>');
+    }
+
+    public function getIsoUtcState(mixed $state = null): ?string
+    {
+        $state ??= $this->getState();
+
         if (blank($state)) {
             return null;
         }
@@ -132,9 +228,10 @@ class RelativeTimeColumn extends TextColumn
         }
     }
 
-    public function getServerFallback(): string
+    public function getServerFallback(mixed $state = null): string
     {
-        $iso = $this->getIsoUtcState();
+        $iso = $this->getIsoUtcState($state);
+
         return $iso ? ($iso . ' UTC') : '—';
     }
 

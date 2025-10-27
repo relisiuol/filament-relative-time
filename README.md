@@ -7,6 +7,10 @@ SSR fallback.
 
 **[Documentation](https://github.com/relisiuol/filament-relative-time/tree/v1.0.0/docs/index.md)**
 
+Since v1.1 the column reuses the native `TextColumn` view, so helpers like
+`alignment()`, `wrap()`, copyable state, descriptions, etc. keep working while
+the formatted value is swapped with `<relative-time>`.
+
 ## Quick install
 
 ```bash
@@ -61,8 +65,9 @@ if your target browsers support them.
 
 > Global defaults come from `config/filament-relative-time.php`. Publish the
 > config and set keys like `'format-style' => 'short'` or `'prefix' => ''` to
-> apply them across every column.
-> All options are defined as null, to use default options from [`@github/relative-time-element`](https://github.com/github/relative-time-element).
+> apply them across every column, including the default `time-zone` attribute.
+> All options are defined as null, to use default options from
+> [`@github/relative-time-element`](https://github.com/github/relative-time-element).
 
 Other attributes from the Web Component (e.g. `prefix`, `format-style`,
 `tense`, `no-title`) are mapped with dedicated helpers or fall back to

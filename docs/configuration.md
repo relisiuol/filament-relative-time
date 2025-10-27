@@ -33,8 +33,9 @@ web-component defaults globally. For example, change `'format' => 'relative'`
 to force relative mode everywhere, or set `'format-style' => 'short'` to align
 with your locale preferences.
 
-The plugin (optionally) applies `time-zone` on `<html>` if `defaults['time-zone']`
-is set, which `<relative-time>` inherits automatically.
+When `'time-zone'` is defined here, every `<relative-time>` emitted by the
+column receives that attribute automatically unless you override it per-column
+with `->timeZone(...)`.
 
 - Add `'hour-cycle' => 'h23'` to force 24-hour output regardless of locale.
 - Drop `'time-zone-name'` if you prefer hiding the GMT/offset suffix.
