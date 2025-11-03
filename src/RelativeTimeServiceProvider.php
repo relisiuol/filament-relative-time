@@ -16,9 +16,6 @@ class RelativeTimeServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // Load package views
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'filament-relative-time');
-
         // Publish config and asset
         $this->publishes([
             __DIR__ . '/../config/filament-relative-time.php' => config_path('filament-relative-time.php'),
